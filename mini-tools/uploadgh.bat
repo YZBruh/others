@@ -5,7 +5,7 @@
 :: Logcat temizliği - Clear logcat
 cls
 :: Curl uyarısı - Curl warning
-echo "BU BETİK SADECE CURL KURULU İSE ÇALIŞIR!!!"
+echo "THIS SCRIPT WILL ONLY WORK IF YOU HAVE CURL INSTALLED!!!"
 
 :: Bilgileri al - Get info's
 set /p USERNAME="Username (GitHub): "
