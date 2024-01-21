@@ -1,0 +1,1 @@
+## Gadgets for Samsung devices
