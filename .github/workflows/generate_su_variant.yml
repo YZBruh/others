@@ -1,0 +1,114 @@
+name: Generate SU varianted GSI
+
+on:
+  workflow_dispatch:
+    inputs:
+      GSI_URL:
+        description: 'GSI Directly download link'
+        required: true
+        default: ''
+      PART_TYPE:
+        description: 'Partition style (ab or aonly)'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - ab
+        - aonly
+      ARCH:
+        description: 'Target arch (arm32/a64/arm64)'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - arm64
+        - a64
+        - arm32
+      VNDK_TYPE:
+        description: 'VNDK type (vndklite or vndk)'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - vndk
+        - vndklite
+      TYPE:
+        description: 'Type (vanilla or gapps)'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - gapps
+        - vanilla
+      DISTRO:
+        description: 'Distribution name'
+        required: true
+        default: ''
+      VERSION:
+        description: 'Android version (image)'
+        required: true
+        default: '14'
+
+jobs:
+  build:
+    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Check Out
+      uses: actions/checkout@v3
+
+    - name: Setup environment
+      run: |
+        sudo apt update
+        sudo apt install cpio simg2img git xz-utils xattr -y
+
+    - name: Get treble adapter
+      run: |
+        cd /home
+        sudo mkdir gsi
+        sudo chmod 777 gsi
+        mkdir gsi/image
+        cd gsi
+        git clone https://github.com/ponces/treble_adapter
+        cd treble_adapter
+        sudo chmod -R 777 *
+
+    - name: Download and extract GSI
+      run: |
+        cd /home/gsi/image
+        wget ${{ github.event.inputs.GSI_URL }}
+        xz -dv *.xz
+        rm -rf *.xz
+        mv *.img system.img
+        mv system.img /home/gsi/treble_adapter/system.img
+
+    - name: Generate image
+      run: |
+        cd /home/gsi/treble*
+        sudo bash su.sh system.img
+        rm -rf system.img
+        name=""${{ github.event.inputs.DISTRO }}"-"${{ github.event.inputs.ARCH }}"-"${{ github.event.inputs.TYPE }}"-"${{ github.event.inputs.VNDK_TYPE }}"-"${{ github.event.inputs.VERSION }}".img"
+        mv s-su.img "$name"
+        xz -cv "$name" -T0 > "$name".xz
+        if [ -f system.img ]; then
+            rm -rf system.img
+        fi
+
+    - name: Upload image
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          /home/gsi/treble_adapter/*.xz
+        name: GSI-${{ github.run_id }}
+        tag_name: ${{ github.run_id }}
+        body: |
+          Distribution name: ${{ github.event.inputs.DISTRO }}
+          Android version: ${{ github.event.inputs.VERSION }}
+          Partition type: ${{ github.event.inputs.PART_TYPE }}
+          Arch: ${{ github.event.inputs.ARCH }}
+          Type: ${{ github.event.inputs.TYPE }}
+          SU : true xD
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
