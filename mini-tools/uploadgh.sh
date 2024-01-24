@@ -36,14 +36,14 @@ echo
 read -p "Name of the file to upload: " FILE
 echo
 
-# GitHub yayın API'si üzerinden yayını oluştur
+# Create the post via GitHub publishing API
 response=$(curl -X POST -H "Authorization: token $ACCESS_TOKEN" -d '{"tag_name": "'$TAG_NAME'", "name": "'$RELEASE_NAME'", "draft": false, "prerelease": false}' "https://api.github.com/repos/$USERNAME/$REPO/releases")
 
-# JSON çıktısından tarayıcı ve indirme URL'sini al
+# Get browser and download URL from JSON output
 browser_download_url=$(echo $response | jq -r '.upload_url' | sed -e 's/{?name,label}//')
 browser_download_url="${browser_download_url}?name="$RELEASE_FILEN""
 
-# Yayın dosyasını ekle
+# Add broadcast file
 curl -X POST -H "Authorization: token $ACCESS_TOKEN" -H "Content-Type: application/zip" --data-binary @"$FILE" "$browser_download_url"
 echo
 echo "Succesfull!"
