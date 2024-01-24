@@ -45,6 +45,7 @@ browser_download_url="${browser_download_url}?name="$RELEASE_FILEN""
 
 # Yayın dosyasını ekle
 curl -X POST -H "Authorization: token $ACCESS_TOKEN" -H "Content-Type: application/zip" --data-binary @"$FILE" "$browser_download_url"
+echo
 echo "Succesfull!"
 
 unset USERNAME REPO TAG_NAME RELEASE_NAME RELEASE_FILEN ACCESS_TOKEN FILE PASS response browser_download_url
