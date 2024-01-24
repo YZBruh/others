@@ -16,8 +16,8 @@ set /p ACCESS_TOKEN="Access token: "
 set /p RELEASE_FILEN="File name to save (stream name): "
 set /p FILE="Name of the file to upload: "
 
-:: GitHub Release API'si üzerinden yayını oluştur
+:: Create the release via GitHub Release API
 curl -s -H "Authorization: token %ACCESS_TOKEN%" -d "{""tag_name"": ""%TAG_NAME%"", ""name"": ""%RELEASE_NAME%"", ""draft"": false, ""prerelease"": false}" "https://api.github.com/repos/%USERNAME%/%REPO%/releases"
 
-:: Yayın dosyasını eklemek için
+:: Add the broadcast file
 curl -s -H "Authorization: token %ACCESS_TOKEN%" -H "Content-Type: application/zip" --data-binary @%FILE% "https://uploads.github.com/repos/%USERNAME%/%REPO%/releases/%TAG_NAME%/assets?name=%RELEASE_FILEN%"
