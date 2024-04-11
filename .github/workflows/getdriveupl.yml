@@ -56,7 +56,7 @@ jobs:
         sudo mkdir gupload && sudo chmod 777 gupload && cd gupload
         wget https://github.com/YZBruh/others/raw/master/dow.py
         sudo chmod 777 *.py
-        python dow.py ${{ github.event.inputs.URLID }}
+        python dow.py
         rm *.py
         mv * ${{ github.event.inputs.NAME }}.${{ github.event.inputs.TYPE }}
 
