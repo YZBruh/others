@@ -48,16 +48,14 @@ jobs:
     - name: Setup environment
       run: |
         sudo apt update
-        sudo apt install git gh python3
+        sudo apt install git gh python3 python-pip
 
     - name: Download file
       run: |
         cd /home
         sudo mkdir gupload && sudo chmod 777 gupload && cd gupload
-        wget https://github.com/YZBruh/others/raw/master/dow.py
-        sudo chmod 777 *.py
-        python dow.py
-        rm *.py
+        pip install gdown==2.3.1
+        gdown --id ${{ github.event.inputs.URLID }}
         mv * ${{ github.event.inputs.NAME }}.${{ github.event.inputs.TYPE }}
 
     - name: Upload
