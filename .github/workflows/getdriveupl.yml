@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       URL:
-        description: 'Drive file URL'
+        description: 'Drive file URL (share URL)'
         required: true
         default: ''
       NAME:
