@@ -1,0 +1,43 @@
+name: getdriveupl
+
+on:
+  workflow_dispatch:
+    inputs:
+      URL:
+        description: 'Drive directly download link (you create this)'
+        required: true
+        default: ''
+
+jobs:
+  build:
+    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Check Out
+      uses: actions/checkout@v3
+
+    - name: Setup environment
+      run: |
+        sudo apt update
+        sudo apt install git gh
+
+    - name: Download file
+      run: |
+        cd /home
+        sudo mkdir gupload && sudo chmod 777 gupload && cd gupload
+        wget ${{ github.event.inputs.URL }} || exit 1
+        mv * file.rar
+
+    - name: Upload
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          /home/gupload/*.rar
+        name: ${{ github.run_id }}
+        tag_name: ${{ github.run_id }}
+        body: |
+          ${{ github.run_id }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
