@@ -3,8 +3,12 @@ name: getdriveupl
 on:
   workflow_dispatch:
     inputs:
-      URL:
-        description: 'Drive directly download link (you create this)'
+      URLID:
+        description: 'Drive file ID'
+        required: true
+        default: ''
+      NAME:
+        description: 'The name to upload the file to (do not include the extension)'
         required: true
         default: ''
       TYPE:
@@ -44,7 +48,7 @@ jobs:
     - name: Setup environment
       run: |
         sudo apt update
-        sudo apt install git gh
+        sudo apt install git gh python
 
     - name: Download file
       run: |
@@ -52,9 +56,9 @@ jobs:
         sudo mkdir gupload && sudo chmod 777 gupload && cd gupload
         wget https://github.com/YZBruh/others/raw/master/dow.py
         sudo chmod 777 *.py
-        python dow.py
+        python dow.py ${{ github.event.inputs.URLID }}
         rm *.py
-        mv * file.${{ github.event.inputs.TYPE }}
+        mv * ${{ github.event.inputs.NAME }}.${{ github.event.inputs.TYPE }}
 
     - name: Upload
       uses: softprops/action-gh-release@v1
