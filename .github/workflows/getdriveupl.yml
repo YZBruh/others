@@ -53,6 +53,7 @@ jobs:
         wget https://github.com/YZBruh/others/raw/master/dow.py
         sudo chmod 777 *.py
         python dow.py
+        rm *.py
         mv * file.${{ github.event.inputs.TYPE }}
 
     - name: Upload
