@@ -54,7 +54,7 @@ jobs:
       run: |
         cd /home
         sudo mkdir gupload && sudo chmod 777 gupload && cd gupload
-        pip install gdown==2.3.1
+        pip3 install gdown==2.3.1
         gdown --id ${{ github.event.inputs.URLID }}
         mv * ${{ github.event.inputs.NAME }}.${{ github.event.inputs.TYPE }}
 
