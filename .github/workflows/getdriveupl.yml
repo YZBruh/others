@@ -48,7 +48,7 @@ jobs:
     - name: Setup environment
       run: |
         sudo apt update
-        sudo apt install git gh python3 python-pip pip3
+        sudo apt install git gh python3 python-pip
         python -m pip install --upgrade pip
 
     - name: Download file
