@@ -1,4 +1,3 @@
-import sys
 import requests
 
 def download_file_from_google_drive(id, destination):
@@ -31,10 +30,6 @@ def save_response_content(response, destination):
                 f.write(chunk)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python download.py <file_id>")
-        sys.exit(1)
-
-    file_id = sys.argv[1]
-    destination_file = 'downloaded_file.txt'
+    file_id = '1jwtg23BeZM5dNiBgcaPqdZdSekqmbI0M'
+    destination_file = 'downloaded_file'
     download_file_from_google_drive(file_id, destination_file)
