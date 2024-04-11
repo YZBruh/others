@@ -3,8 +3,8 @@ name: getdriveupl
 on:
   workflow_dispatch:
     inputs:
-      URLID:
-        description: 'Drive file ID'
+      URL:
+        description: 'Drive file URL'
         required: true
         default: ''
       NAME:
@@ -55,7 +55,7 @@ jobs:
         cd /home
         sudo mkdir gupload && sudo chmod 777 gupload && cd gupload
         pip3 install gdown==2.3.1
-        gdown --id ${{ github.event.inputs.URLID }}
+        gdown ${{ github.event.inputs.URL }}
         mv * ${{ github.event.inputs.NAME }}.${{ github.event.inputs.TYPE }}
 
     - name: Upload
