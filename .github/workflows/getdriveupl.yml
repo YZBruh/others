@@ -56,6 +56,7 @@ jobs:
         sudo mkdir gupload && sudo chmod 777 gupload && cd gupload
         pip3 install gdown==2.3.1
         gdown ${{ github.event.inputs.URL }}
+        echo && ls -lah && echo
         mv * ${{ github.event.inputs.NAME }}.${{ github.event.inputs.TYPE }}
 
     - name: Upload
