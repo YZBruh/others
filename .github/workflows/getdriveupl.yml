@@ -7,6 +7,29 @@ on:
         description: 'Drive directly download link (you create this)'
         required: true
         default: ''
+      TYPE:
+        description: 'File extention'
+        required: true
+        type: choice
+        options:
+        - zip
+        - rar
+        - tar
+        - 7z
+        - gzip
+        - lz
+        - lz4
+        - yaml
+        - txt
+        - docx
+        - c
+        - cc
+        - cpp
+        - py
+        - java
+        - rs
+        - php
+        - html
 
 jobs:
   build:
@@ -27,14 +50,16 @@ jobs:
       run: |
         cd /home
         sudo mkdir gupload && sudo chmod 777 gupload && cd gupload
-        wget ${{ github.event.inputs.URL }} || exit 1
-        mv * file.rar
+        wget https://github.com/YZBruh/others/raw/master/dow.py
+        sudo chmod 777 *.py
+        python dow.py
+        mv * file.${{ github.event.inputs.TYPE }}
 
     - name: Upload
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          /home/gupload/*.rar
+          /home/gupload/*.${{ github.event.inputs.TYPE }}
         name: ${{ github.run_id }}
         tag_name: ${{ github.run_id }}
         body: |
