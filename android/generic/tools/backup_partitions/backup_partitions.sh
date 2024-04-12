@@ -25,6 +25,10 @@ if [ -d $devmodern ] && [ -f $devmodern/boot ]; then
     devblock=$devmodern
 else if [ -d $devstale ] && [ $devstale/boot ]; then
     devblock=$devstale
+else
+    echo "/dev bloğu bulunamadı!"
+    exit 1
+fi
 
 # by-name içeriğini yedekle
 for partition in $(ls $devblock); do
