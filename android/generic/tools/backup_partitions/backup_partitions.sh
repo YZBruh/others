@@ -23,7 +23,7 @@ devstale="/dev/block/platform/bootdevice/by-name"
 # dev bloğunu belirle
 if [ -d $devmodern ] && [ -f $devmodern/boot ]; then
     devblock=$devmodern
-else if [ -d $devstale ] && [ $devstale/boot ]; then
+elif [ -d $devstale ] && [ $devstale/boot ]; then
     devblock=$devstale
 else
     echo "/dev bloğu bulunamadı!"
