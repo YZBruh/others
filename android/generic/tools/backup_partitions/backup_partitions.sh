@@ -33,7 +33,7 @@ fi
 # by-name içeriğini yedekle
 for partition in $(ls $devblock); do
     echo "Yedekleniyor: $partition..."
-    dd if="$devblock/$partition" of="$backup_dir/$partition.img" status=none
+    dd if="$devblock/$partition" of="$backup_dir/$partition.img"
 done
 
 echo "Yedekleme tamamlandı."
