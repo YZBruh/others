@@ -22,7 +22,7 @@ if [[ "$status" == "y" ]]; then
     read backup_dir
     if [ ! -d $backup_dir ]; then
         echo "Böyle bir dizin bulunamadı: $backup_dir"
-        echo "Oluşturmak istermisiniz? (y/n)"
+        printf "Oluşturmak istermisiniz? (y/n): "
         read pass
         if [[ "$pass" == "y" ]]; then
             mkdir $backup_dir
