@@ -31,6 +31,7 @@ if [[ "$status" == "y" ]]; then
             exit 1
         else
             echo "Bilinmeyen seçenek: $pass"
+            exit 1
         fi
     fi
 elif [[ "$status" == "n" ]]; then
