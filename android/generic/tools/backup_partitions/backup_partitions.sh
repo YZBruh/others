@@ -3,7 +3,6 @@
 
 # Yedekleme dizini
 backup_dir="/sdcard/ROM_BACKUP_$(getprop ro.product.device)_$(date '+%Y%m%d')"
-mkdir -p "$backup_dir"
 
 # biraz bilgi verelim
 echo "            --- Cihaz bilgisi ---"
@@ -23,10 +22,20 @@ if [[ "$status" == "y" ]]; then
     read backup_dir
     if [ ! -d $backup_dir ]; then
         echo "Böyle bir dizin bulunamadı: $backup_dir"
-        exit 1
+        echo "Oluşturmak istermisiniz? (y/n)"
+        read pass
+        if [[ "$pass" == "y" ]]; then
+            mkdir $backup_dir
+        elif [[ "$pass" == "n" ]]; then
+            echo "Dizin yok = yedek yok"
+            exit 1
+        else
+            echo "Bilinmeyen seçenek: $pass"
+        fi
     fi
 elif [[ "$status" == "n" ]]; then
     echo "Yedek dizini otomatik oluşturuluyor..."
+    mkdir -p "$backup_dir"
 else
     echo "Bilinmeyen seçenek: $status"
     exit 1
