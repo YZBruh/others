@@ -61,7 +61,7 @@ fi
 # by-name içeriğini yedekle
 for partition in $(ls $devblock); do
     if [[ "$partition" == "userdata" ]]; then
-        echo "userdata bölümü atlanıyor..."
+        echo "userdata bölümü denk geldi, atlanıyor..."
     else
         echo "Yedekleniyor: $partition..."
         dd if="$devblock/$partition" of="$backup_dir/$partition.img"
