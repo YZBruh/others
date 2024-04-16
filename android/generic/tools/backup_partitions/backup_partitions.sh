@@ -13,6 +13,24 @@ echo "Mimari: $(getprop ro.product.cpu.abi)"
 echo "VNDK (Vendor) sürümü: $(getprop ro.vndk.version)"
 echo "Üretici: $(getprop ro.product.brand)"
 echo "_______________________________________________"
+
+printf "Kendiniz bir yedek dizini ayarlamak istermisiniz? (y/n): "
+read status
+
+if [[ "$status" == "y" ]]; then
+    unset backup_dir
+    printf "Yedek dizinini yazın: "
+    read backup_dir
+    if [ ! -d $backup_dir ]; then
+        echo "Böyle bir dizin bulunamadı: $backup_dir"
+        exit 1
+    fi
+elif [[ "$status" == "n" ]]; then
+    echo "Yedek dizini otomatik oluşturuluyor..."
+else
+    echo "Bilinmeyen seçenek: $status"
+    exit 1
+fi
 echo
 echo "Yedek dizini: $backup_dir"
 echo "/dev bloğunun bilgisi alınıyor..."
