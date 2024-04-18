@@ -37,7 +37,7 @@ jobs:
         if [ -f *.7z ]; then
             7z x *.7z
             rm *.7z
-        elif [ -f *.zip]; then
+        elif [ -f *.zip ]; then
             unzip *.zip || exit 1
             rm *.zip
         elif [ -f *.tgz ]; then
