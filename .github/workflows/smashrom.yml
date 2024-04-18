@@ -54,7 +54,7 @@ jobs:
         }
         getall() {
             for img in "$1"/*; do
-                if [ -f "$img" ]; then
+                if [ -f "$img" ] && [[ ! "$img" == *"/extr/"* ]]; then
                     if [[ "$img" == *".img" ]]; then
                         move_image "$img"
                     fi
