@@ -74,6 +74,7 @@ jobs:
                 resize2fs -M "$file"
             fi
         done
+      continue-on-error: true
 
     - name: Upload
       uses: softprops/action-gh-release@v1
