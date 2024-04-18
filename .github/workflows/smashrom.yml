@@ -69,7 +69,7 @@ jobs:
       run: |
         cd /home/rom/extr
         for file in "$(pwd)"/*.img; do
-            file -s "$file" | grep "ext"
+            file -s "$file" | grep -E "ext[234]"
             if [[ "$?" == "0" ]]; then
                 resize2fs -M "$file" || exit 1
             fi
