@@ -1,0 +1,88 @@
+name: ROM Smasher
+
+on:
+  workflow_dispatch:
+    inputs:
+      ROMURL:
+        description: 'ROM Directly download link'
+        required: true
+        default: ''
+
+jobs:
+  build:
+    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Check Out
+      uses: actions/checkout@v3
+
+    - name: Update packages and install depencies
+      run: |
+        sudo apt update
+        sudo apt upgrade -y
+        sudo apt install -y zip p7zip e2fsprogs aria2 tar
+
+    - name: Download ROM
+      run: |
+        cd /home
+        sudo mkdir rom && sudo chmod 777 rom && cd rom
+        aria2c "${{ github.event.inputs.ROMURL }}" || exit 1
+        sudo chmod 777 *
+
+    - name: Extract ROM
+      run: |
+        cd /home/rom
+        if [ -f *.zip ]; then
+            7z x *.7z
+            rm *.7z
+        elif [ -f *.zip]; then
+            unzip *.zip || exit 1
+            rm *.zip
+        elif [ -f *.tgz ]; then
+            tar -xf *.tgz || exit 1
+            rm *.tgz
+        else
+            echo "Unsupported file format. File name: $(basename *)"
+            exit 1
+        fi
+        mkdir extr
+        move_image() {
+            mv "$1" /home/rom/extr || exit 1
+            echo "Moved: $1"
+        }
+        getall() {
+            for img in "$1"/*; do
+                if [ -f "$img" ]; then
+                    if [[ "$img" == *".img" ]]; then
+                        move_image "$img"
+                    fi
+                elif [ -d "$img" ]; then
+                    getall "$img"
+                fi
+            done
+        }
+        getall "$(pwd)"
+
+    - name: Resize images (ext)
+      run: |
+        cd /home/rom/extr
+        for file in "$(pwd)"/*.img; do
+            file -s "$file" | grep "ext"
+            if [[ "$?" == "0" ]]; then
+                resize2fs -M "$file" || exit 1
+            fi
+        done
+
+    - name: Upload
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          /home/rom/extr/*.img
+        name: Extracted ROM ${{ github.run_id }}
+        tag_name: ${{ github.run_id }}
+        body: |
+          Extracted ROM ${{ github.run_id }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
