@@ -58,7 +58,7 @@ jobs:
                     if [[ "$img" == *".img" ]]; then
                         move_image "$img"
                     fi
-                elif [ -d "$img" ]; then
+                elif [ -d "$img" ] && [[ ! "$img" == "extr" ]]; then
                     getall "$img"
                 fi
             done
