@@ -79,15 +79,25 @@ jobs:
                 resize2fs -M "$file"
             elif [[ "$file" == *"mi_ext"* ]]; then
                 resize2fs -M "$file"
+            elif [[ "$file" == *"cache"* ]]; then
+                resize2fs -M "$file"
             fi
         done
+        files=$(find . -type f -size +1.8G)
+        if [ -n "$files" ]; then
+           for file in $files; do
+              echo "Compressing (xz): $file"
+              xz "$file"
+              rm "$file"
+           done
+        fi
       continue-on-error: true
 
     - name: Upload
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          /home/rom/extr/*.img
+          /home/rom/extr/*
         name: Extracted ROM ${{ github.run_id }}
         tag_name: ${{ github.run_id }}
         body: |
