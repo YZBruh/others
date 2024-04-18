@@ -34,7 +34,7 @@ jobs:
     - name: Extract ROM
       run: |
         cd /home/rom
-        if [ -f *.zip ]; then
+        if [ -f *.7z ]; then
             7z x *.7z
             rm *.7z
         elif [ -f *.zip]; then
