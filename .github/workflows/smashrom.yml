@@ -69,8 +69,15 @@ jobs:
       run: |
         cd /home/rom/extr
         for file in "$(pwd)"/*.img; do
-            file -s "$file" | grep -E "ext[234]"
-            if [[ "$?" == "0" ]]; then
+            if [[ "$file" == *"system"* ]]; then
+                resize2fs -M "$file"
+            elif [[ "$file" == *"system_ext"* ]]; then
+                resize2fs -M "$file"
+            elif [[ "$file" == *"vendor"* ]]; then
+                resize2fs -M "$file"
+            elif [[ "$file" == *"product"* ]]; then
+                resize2fs -M "$file"
+            elif [[ "$file" == *"mi_ext"* ]]; then
                 resize2fs -M "$file"
             fi
         done
