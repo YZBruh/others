@@ -67,6 +67,10 @@ jobs:
                         move_image "$img"
                     elif [[ "$img" == *".dat" ]]; then
                         move_image "$img"
+                    elif [[ "$img" == *".list" ]]; then
+                        move_image "$img"
+                    elif [[ "$img" == *".mbn" ]]; then
+                        move_image "$img"
                     fi
                 elif [ -d "$img" ] && [[ ! "$img" == *"/extr/"* ]]; then
                     getall "$img"
