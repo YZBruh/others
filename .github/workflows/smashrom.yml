@@ -57,6 +57,12 @@ jobs:
                 if [ -f "$img" ] && [[ ! "$img" == *"/extr/"* ]]; then
                     if [[ "$img" == *".img" ]]; then
                         move_image "$img"
+                    elif [ "$img" == *".bin" ]]; then
+                        move_image "$img"
+                    elif [[ "$img" == *"MT"*".txt" ]]; then
+                        move_image "$img"
+                    elif [[ "$img" == *"raw"*".xml" ]]; then
+                        move_image "$img"
                     fi
                 elif [ -d "$img" ] && [[ ! "$img" == *"/extr/"* ]]; then
                     getall "$img"
@@ -68,7 +74,7 @@ jobs:
     - name: Resize images (ext)
       run: |
         cd /home/rom/extr
-        for file in "$(pwd)"/*.img; do
+        for file in "$(pwd)"/*; do
             if [[ "$file" == *"system"* ]]; then
                 resize2fs -M "$file"
             elif [[ "$file" == *"system_ext"* ]]; then
