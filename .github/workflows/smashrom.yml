@@ -117,13 +117,13 @@ jobs:
         done
         rm sdat2img.py
         for file in "$(pwd)"/*; do
-            if [[ "$file" == *"system"* ]] && system_is_normal; then
+            if [[ "$file" == *"system"* ]] && [[ "$system_is_normal" == "true" ]]; then
                 resize2fs -M "$file"
             elif [[ "$file" == *"system_ext"* ]]; then
                 resize2fs -M "$file"
-            elif [[ "$file" == *"vendor"* ]] && vendor_is_normal; then
+            elif [[ "$file" == *"vendor"* ]] && [[ "$vendor_is_normal" == "true" ]]; then
                 resize2fs -M "$file"
-            elif [[ "$file" == *"product"* ]] && product_is_normal; then
+            elif [[ "$file" == *"product"* ]] && [[ "$product_is_normal" == "true" ]]; then
                 resize2fs -M "$file"
             elif [[ "$file" == *"mi_ext"* ]]; then
                 resize2fs -M "$file"
