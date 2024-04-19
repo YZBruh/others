@@ -81,14 +81,13 @@ jobs:
                 resize2fs -M "$file"
             fi
         done
-        files=$(find . -type f -size +1.8G)
-        if [ -n "$files" ]; then
-           for file in $files; do
-              echo "Compressing (xz): $file"
-              xz "$file"
-              rm "$file"
-           done
-        fi
+        max_size="1933156864"
+        for image in "$(pwd)"/*; do
+           if [[ $(stat -c %s "$image") -gt $max_size ]]; then
+               xz "$image"
+               rm "$image"
+           fi
+        done
       continue-on-error: true
 
     - name: Upload
