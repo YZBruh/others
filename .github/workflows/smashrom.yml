@@ -79,9 +79,6 @@ jobs:
                 resize2fs -M "$file"
             elif [[ "$file" == *"mi_ext"* ]]; then
                 resize2fs -M "$file"
-            elif [[ "$file" == *"cache"* ]]; then
-                e2fsck -f "$file"
-                resize2fs -M "$file"
             fi
         done
         files=$(find . -type f -size +1.8G)
