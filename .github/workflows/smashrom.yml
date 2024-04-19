@@ -133,7 +133,7 @@ jobs:
         for image in "$(pwd)"/*; do
            if [[ $(stat -c %s "$image") -gt $max_size ]]; then
                xz "$image"
-               rm "$image"
+               rm -f "$image"
            fi
         done
         
