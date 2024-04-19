@@ -83,16 +83,22 @@ jobs:
     - name: Prepare to upload
       run: |
         cd /home/rom/extr
+        system_is_dat=false
+        vendor_is_dat=false
+        product_is_dat=false
         wget "https://github.com/xpirt/sdat2img/raw/master/sdat2img.py"
         sudo chmod 777 sdat2img.py
         for br in "$(pwd)"/*.br; do
             if [[ "$br" == *"system"* ]]; then
+                system_is_dat=true
                 brotli -d "$br" -o system.new.dat
                 rm "$br"
             elif [[ "$br" == *"vendor"* ]]; then
+                vendor_is_dat=true
                 brotli -d "$br" -o vendor.new.dat
                 rm "$br"
             elif [[ "$br" == *"product"* ]]; then
+                product_is_dat=true
                 brotli -d "$br" -o product.new.dat
                 rm "$br"
             fi
@@ -111,20 +117,15 @@ jobs:
         done
         rm sdat2img.py
         for file in "$(pwd)"/*; do
-            if [[ "$file" == *"system"* ]]; then
-                e2fsck -fp "$file"
+            if [[ "$file" == *"system"* ]] && system_is_dat; then
                 resize2fs -M "$file"
             elif [[ "$file" == *"system_ext"* ]]; then
-                e2fsck -fp "$file"
                 resize2fs -M "$file"
-            elif [[ "$file" == *"vendor"* ]]; then
-                e2fsck -fp "$file"
+            elif [[ "$file" == *"vendor"* ]] && vendor_is_dat; then
                 resize2fs -M "$file"
-            elif [[ "$file" == *"product"* ]]; then
-                 e2fsck -fp "$file"
+            elif [[ "$file" == *"product"* ]] && product_is_dat; then
                 resize2fs -M "$file"
             elif [[ "$file" == *"mi_ext"* ]]; then
-                e2fsck -fp "$file"
                 resize2fs -M "$file"
             fi
         done
