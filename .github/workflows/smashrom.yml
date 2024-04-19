@@ -57,7 +57,7 @@ jobs:
                 if [ -f "$img" ] && [[ ! "$img" == *"/extr/"* ]]; then
                     if [[ "$img" == *".img" ]]; then
                         move_image "$img"
-                    elif [ "$img" == *".bin" ]]; then
+                    elif [[ "$img" == *".bin" ]]; then
                         move_image "$img"
                     elif [[ "$img" == *"MT"*".txt" ]]; then
                         move_image "$img"
