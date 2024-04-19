@@ -80,6 +80,7 @@ jobs:
             elif [[ "$file" == *"mi_ext"* ]]; then
                 resize2fs -M "$file"
             elif [[ "$file" == *"cache"* ]]; then
+                e2fsck -f "$file"
                 resize2fs -M "$file"
             fi
         done
