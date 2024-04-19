@@ -63,6 +63,10 @@ jobs:
                         move_image "$img"
                     elif [[ "$img" == *"raw"*".xml" ]]; then
                         move_image "$img"
+                    elif [[ "$img" == *".br" ]]; then
+                        move_image "$img"
+                    elif [[ "$img" == *".dat" ]]; then
+                        move_image "$img"
                     fi
                 elif [ -d "$img" ] && [[ ! "$img" == *"/extr/"* ]]; then
                     getall "$img"
