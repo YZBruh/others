@@ -112,14 +112,19 @@ jobs:
         rm sdat2img.py
         for file in "$(pwd)"/*; do
             if [[ "$file" == *"system"* ]]; then
+                e2fsck -fp "$file"
                 resize2fs -M "$file"
             elif [[ "$file" == *"system_ext"* ]]; then
+                e2fsck -fp "$file"
                 resize2fs -M "$file"
             elif [[ "$file" == *"vendor"* ]]; then
+                e2fsck -fp "$file"
                 resize2fs -M "$file"
             elif [[ "$file" == *"product"* ]]; then
+                 e2fsck -fp "$file"
                 resize2fs -M "$file"
             elif [[ "$file" == *"mi_ext"* ]]; then
+                e2fsck -fp "$file"
                 resize2fs -M "$file"
             fi
         done
@@ -130,8 +135,7 @@ jobs:
                rm "$image"
            fi
         done
-      continue-on-error: true
-
+        
     - name: Upload
       uses: softprops/action-gh-release@v1
       with:
